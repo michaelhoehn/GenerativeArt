@@ -1,7 +1,8 @@
+/// <reference path="../../node_modules/@types/p5/global.d.ts" />
+
 function setup() {
-  createCanvas(1000, 1000);
-  noStroke();
-  rect(0, 0, width, height);
+  createCanvas(800, 800);
+  background(255);
 }
 
 function draw() {}
