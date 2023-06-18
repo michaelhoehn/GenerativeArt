@@ -1,20 +1,20 @@
-console.log(fxhash);
-console.log(fxrand());
+//console.log(fxhash);
+//console.log(fxrand());
 
 const sp = new URLSearchParams(window.location.search);
-console.log(sp);
+//console.log(sp);
 
 // this is how to define parameters
 $fx.params([
   {
-    id: "number_id",
-    name: "A number/float64",
+    id: "rowCount",
+    name: "Row Count",
     type: "number",
     //default: Math.PI,
     options: {
-      min: 1,
-      max: 10,
-      step: 0.00000000000001,
+      min: 2,
+      max: 20,
+      step: 1,
     },
   },
   {
@@ -63,7 +63,7 @@ $fx.params([
 
 // this is how features can be defined
 $fx.features({
-  "A random feature": Math.floor($fx.rand() * 10),
+  "Row Count": $fx.getParam("rowCount"),
   "A random boolean": $fx.rand() > 0.5,
   "A random string": ["A", "B", "C", "D"].at(Math.floor($fx.rand() * 4)),
   "Feature from params, its a number": $fx.getParam("number_id"),
