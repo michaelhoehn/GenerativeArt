@@ -19,12 +19,12 @@ function draw() {
   // TO DO: fxrand -> square or rectangle (landscape or portrait )
   // TO DO: fxrand -> evenly spaced or not
   // TO DO: fxrand ranges for u, v
-  createGrid(20, 20, 2);
+  createGrid(20, 20, generateKey());
 
   // Algo: cull points based on [random, perlin, z-height + random, x-pos + random, y-pos + random]
 
   // TO DO: fxrand -> to display or not to display
-  displayPoints(5);
+  displayPoints(3);
 
   // draw a thingy at a specified point
   drawHouse(points[5].x, points[5].y);
@@ -32,6 +32,7 @@ function draw() {
 }
 
 function drawHouse(x, y) {
+  // TO DO: x pos > width / 2 ? move the drawing over to fit within the margins
   noFill();
   strokeWeight(1);
   beginShape();
@@ -42,11 +43,53 @@ function drawHouse(x, y) {
   endShape(CLOSE);
 }
 
+function generateKey() {
+  // Description: Create a key to pass into the grid input parameter to activate a filter method
+  let randomKey = fxrand() * 100;
+  let optionCount = 7;
+  let p = [];
+  let key;
+  for (let i = 0; i < optionCount; i++) {
+    p.push((100 / optionCount) * i);
+  }
+  console.log(p);
+  console.log(randomKey);
+  if (randomKey >= p[p.length]) {
+    return (key = 0);
+  } else if (randomKey >= p[5] && randomKey < p[6]) {
+    return (key = 1);
+  } else if (randomKey >= p[4] && randomKey < p[5]) {
+    return (key = 2);
+  } else if (randomKey >= p[3] && randomKey < p[4]) {
+    return (key = 3);
+  } else if (randomKey >= p[2] && randomKey < p[3]) {
+    return (key = 4);
+  } else if (randomKey >= p[1] && randomKey < p[2]) {
+    return (key = 5);
+  } else {
+    return (key = 6);
+  }
+  // can attempt a refactor here when able to
+  // return randomKey > p[p.length]
+  //   ? (key = 6)
+  //   : randomKey >= p[6] && randomKey < p[p.length]
+  //   ? (key = 5)
+  //   : randomKey >= p[5] && randomKey < p[6]
+  //   ? (key = 4)
+  //   : randomKey >= p[4] && randomKey < p[5]
+  //   ? (key = 3)
+  //   : randomKey >= p[3] && randomKey < p[4]
+  //   ? (key = 2)
+  //   : randomKey >= p[2] && randomKey < p[3]
+  //   ? (key = 1)
+  //   : (key = 0);
+}
+
 function createGrid(u, v, key) {
   // Description: Creates a uv grid of points
   // u: count U direction
   // v: count V direction
-  // key: the switch case key for point filtering (0 = none, 1 = random, 2 = perlin, 3 = x position, 4 = y position...)
+  // key: the switch case key for point filtering (0 = none, 1 = random, 2 = perlin, 3 = x position, 4 = y position, 5 = x position reverse, 6 = y position reverse)
   // TO DO: pass filter option through as a parameter
   // TO TO: switch cases for different filter algos
   // create even columns and rows
@@ -84,6 +127,36 @@ function createGrid(u, v, key) {
           let n = noise(0.01 * gridX, 0.01 * gridY);
           n >= nAvg * nOff ? (x = (width / v) * gridX) : null;
           n >= nAvg * nOff ? (y = (height / u) * gridY) : null;
+          break;
+        case 3:
+          console.log("grid filter: X-POSITION");
+          x = (width / v) * gridX;
+          y = (height / u) * gridY;
+          if (x >= width / 2) {
+            x = null;
+            y = null;
+          }
+          break;
+        case 4:
+          console.log("grid filter: y-POSITION");
+          x = (width / v) * gridX;
+          y = (height / u) * gridY;
+          y <= height / 2 ? (x = null) : (x = (width / v) * gridX);
+          break;
+        case 5:
+          console.log("grid filter: X-POSITION REVERSE");
+          x = (width / v) * gridX;
+          y = (height / u) * gridY;
+          if (x <= width / 2) {
+            x = null;
+            y = null;
+          }
+          break;
+        case 6:
+          console.log("grid filter: y-POSITION REVERSE");
+          x = (width / v) * gridX;
+          y = (height / u) * gridY;
+          y >= height / 2 ? (x = null) : (x = (width / v) * gridX);
           break;
         default:
           break;
