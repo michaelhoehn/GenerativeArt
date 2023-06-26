@@ -19,7 +19,10 @@ function draw() {
   // TO DO: fxrand -> square or rectangle (landscape or portrait )
   // TO DO: fxrand -> evenly spaced or not
   // TO DO: fxrand ranges for u, v
-  createGrid(20, 20, generateKey());
+
+  // use generateKey() inside createGrid(20, 20, generateKey());
+
+  createGrid(20, 20, 0);
 
   // Algo: cull points based on [random, perlin, z-height + random, x-pos + random, y-pos + random]
 
@@ -27,11 +30,12 @@ function draw() {
   displayPoints(3);
 
   // draw a thingy at a specified point
-  drawHouse(points[5].x, points[5].y);
+  drawHouse(points[int(points.length / 2)].x, points[int(points.length / 2)].y);
   noLoop();
 }
 
-function drawHouse(x, y) {
+function drawHouse(x, y, multiplier) {
+  // Description: Draws a house at a start point and scales based on multiplier
   // TO DO: x pos > width / 2 ? move the drawing over to fit within the margins
   noFill();
   strokeWeight(1);
