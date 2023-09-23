@@ -7,8 +7,8 @@ const sp = new URLSearchParams(window.location.search);
 // this is how to define parameters
 $fx.params([
   {
-    id: "rowCount",
-    name: "Row Count",
+    id: "gridSize",
+    name: "gridSize01",
     type: "number",
     //default: Math.PI,
     options: {
@@ -63,7 +63,7 @@ $fx.params([
 
 // this is how features can be defined
 $fx.features({
-  "Row Count": $fx.getParam("rowCount"),
+  "Grid Size": $fx.getParam("gridSize"),
   "A random boolean": $fx.rand() > 0.5,
   "A random string": ["A", "B", "C", "D"].at(Math.floor($fx.rand() * 4)),
   // "Feature from params, its a number": $fx.getParam("number_id"),
@@ -83,8 +83,6 @@ $fx.features({
 // how to read a single transformed parameter
 // console.log("Single transformed value:");
 // console.log($fx.getParam("color_id"));
-
-// IMPORTANT - If using fx(params) you need to actively update the DOM with features
 
 // update the document based on the parameters
 // document.body.style.background = $fx.getParam("color_id").hex.rgba;

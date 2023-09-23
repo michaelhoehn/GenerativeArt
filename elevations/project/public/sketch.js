@@ -3,7 +3,25 @@
 import DrawingParams from "./classes/DrawingParams.js";
 import { createGrid } from "./utils/gridGenerator.js";
 import { displayPoints } from "./utils/displayPoints.js";
-import { drawHouse } from "./houseGenerator.js";
+import House from "./classes/House.js";
+
+$fx.params([
+  {
+    id: "gridSize",
+    name: "Grid Size",
+    type: "number",
+    options: {
+      min: 2,
+      max: 20,
+      step: 1,
+    },
+  },
+]);
+
+console.log($fx.getRawParams());
+
+let gridSize = $fx.getParam("gridSize");
+console.log(gridSize);
 
 new p5(function (p5) {
   let params;
@@ -15,10 +33,12 @@ new p5(function (p5) {
   };
 
   p5.draw = () => {
-    let cg = createGrid(p5, 20, 20, 0);
+    let cg = createGrid(p5, gridSize, gridSize, 0);
     displayPoints(p5, cg, 3);
     p5.strokeWeight(1);
-    drawHouse(p5, p5.width / 2, p5.height / 2, 100);
+    for (let i = 0; i < cg.length; i++) {
+      let house = new House(p5, cg[i].x, cg[i].y);
+    }
     p5.noLoop();
   };
 });
