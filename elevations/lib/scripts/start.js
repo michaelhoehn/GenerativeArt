@@ -11,22 +11,31 @@
  * and webpack-live-server will be started to expose the project itself.
  */
 
-const path = require("path");
-const fs = require("fs");
-const express = require("express");
-const chalk = require("chalk");
+const path = require("path")
+const fs = require("fs")
+const express = require("express")
+const chalk = require("chalk")
+const { logger: logger2 } = require("./shared/utils/log")
 
-const Webpack = require("webpack");
-const WebpackDevServer = require("webpack-dev-server");
-const open = require("open");
+const Webpack = require("webpack")
+const WebpackDevServer = require("webpack-dev-server")
+const open = require("open")
 
 // the environment config
-const env = require("../config/env");
+const env = require("../config/env")
+const { pullSnippet } = require("./shared/utils/snippet")
+const sha1 = require("./shared/utils/sha1")
+const { readLockFile } = require("./shared/utils/fxhash-lock")
+const {
+  detectChanges,
+  updateToolkit,
+  autoUpdateTooklit,
+} = require("./shared/changes")
 // the webpack dev config
 const webpackConfig =
   env.RUN_PROJECT == true
     ? require("../config/webpack.config.dev")
-    : require("../config/webpack.config.headless");
+    : require("../config/webpack.config.headless")
 
 // very simple logger interface:
 const logger = {
@@ -35,40 +44,52 @@ const logger = {
   command: (txt) => chalk.bgWhite.bold(` ${txt} `),
   infos: chalk.gray,
   url: chalk.bold.blue,
-};
+}
 
 function padn(n, len = 2, char = "0") {
-  return n.toString().padStart(len, char);
+  return n.toString().padStart(len, char)
 }
 
 function verifyFxlens(path) {
-  const files = fs.readdirSync(path);
+  const files = fs.readdirSync(path)
   // if no index.html, fxlens has not yet been initialized, throw an error
   if (!files.includes("index.html")) {
-    console.log(logger.error("[error] fxlens is not installed\n"));
+    console.log(logger.error("[error] fxlens is not installed\n"))
     console.log(
       `Have you tried running ${logger.command(
         "npm install"
       )} before ${logger.command("npm start")} ?`
-    );
+    )
     console.log(
       logger.infos(
         "fxlens is pulled from its repository after npm install is called"
       )
-    );
-    console.log();
-    process.exit(1);
+    )
+    console.log()
+    process.exit(1)
   }
 }
 
-(async () => {
+;(async () => {
   // commonly used variable for ease
-  const URL_FXLENS = `http://localhost:${env.PORT_FXSTUDIO}`;
-  const URL_PROJECT = `http://localhost:${env.PORT_PROJECT}`;
-  const PATH_FXLENS = path.join(__dirname, "..", "fxlens");
+  const URL_FXLENS = `http://localhost:${env.PORT_FXSTUDIO}`
+  const URL_PROJECT = `http://localhost:${env.PORT_PROJECT}`
+  const PATH_FXLENS = path.join(__dirname, "..", "files", "fxlens")
+
+  try {
+    await autoUpdateTooklit({
+      onStartAnyways: () => {
+        console.log(chalk.dim("Starting anyways...\n\n"))
+      },
+      clearValidationMessage: true,
+    })
+  } catch (err) {
+    console.log(chalk.red.bold(`❗ ${err.message}`))
+    console.log(chalk.dim("Starting anyways...\n\n"))
+  }
 
   // do some checkups to see if fxlens is available, otherwise throw?
-  verifyFxlens(PATH_FXLENS);
+  verifyFxlens(PATH_FXLENS)
 
   // instanciate compiler and server
   const compiler = Webpack({
@@ -79,41 +100,41 @@ function verifyFxlens(path) {
       level: "error",
     },
     stats: "errors-only",
-  });
-  const server = new WebpackDevServer(webpackConfig.devServer, compiler);
+  })
+  const server = new WebpackDevServer(webpackConfig.devServer, compiler)
 
   if (env.RUN_PROJECT === true) {
     // hook the compilation done event to print custom logs
     compiler.hooks.done.tap("project", (stats) => {
-      const hasErrors = stats.hasErrors();
+      const hasErrors = stats.hasErrors()
       if (hasErrors) {
-        console.log(logger.error("[project] compilation has failed"));
+        console.log(logger.error("[project] compilation has failed"))
       } else {
-        const date = new Date();
+        const date = new Date()
         const time = `${padn(date.getHours())}:${padn(
           date.getMinutes()
-        )}:${padn(date.getSeconds())}`;
+        )}:${padn(date.getSeconds())}`
         console.log(
           `${logger.success("[project] compiled successfully")} @ ${time}`
-        );
+        )
       }
-    });
+    })
   }
 
   // start the express server to serve static files from the /lib/fxstudio
   // folder to port 3300
-  const app = express();
-  app.use(express.static(PATH_FXLENS));
+  const app = express()
+  app.use(express.static(PATH_FXLENS))
   app.listen(env.PORT_FXSTUDIO, () => {
     console.log(
       `${logger.success("[fxlens] fx(lens) is running on")} ${logger.url(
         URL_FXLENS
       )}`
-    );
-  });
+    )
+  })
 
   server.startCallback(() => {
-    const target = `${URL_FXLENS}/?target=${encodeURIComponent(URL_PROJECT)}`;
+    const target = `${URL_FXLENS}/?target=${URL_PROJECT}`
     const l =
       env.RUN_PROJECT === true
         ? `${logger.success(
@@ -123,11 +144,11 @@ function verifyFxlens(path) {
             "[project] your project might be running on, "
           )} ${logger.url(URL_PROJECT)} ${logger.success(
             "but this is user specified so we don't really know"
-          )}`;
-    console.log(l);
-    console.log();
-    console.log(`opening fxlens with project as target: ${logger.url(target)}`);
-    console.log();
-    open(target);
-  });
-})();
+          )}`
+    console.log(l)
+    console.log()
+    console.log(`opening fxlens with project as target: ${logger.url(target)}`)
+    console.log()
+    open(target)
+  })
+})()

@@ -5,41 +5,44 @@ import { createGrid, generateKey } from "./utils/gridGenerator.js";
 import { displayPoints } from "./utils/displayPoints.js";
 import House from "./classes/House.js";
 
-// $fx.params([{
-//     id: "gridSize",
-//     name: "Grid Size",
-//     type: "number",
-//     options: {
-//         min: 2,
-//         max: 20,
-//         step: 1,
-//     },
-// }, ]);
+new p5(function (p5) {
+  let params;
+  let gridSize;
 
-console.log($fx.getRawParams());
+  p5.setup = () => {
+    gridSize = $fx.getParam("gridSize");
+    console.log(`gridSize = ${gridSize}`);
+    params = new DrawingParams();
+    p5.createCanvas(params.aspect[1], params.aspect[2]);
+    p5.background(255);
+  };
 
-// let gridSize = $fx.getParam("gridSize");
-let gridSize = 20;
-// console.log(`gridSize = ${gridSize}`);
-console.log($fx.getParams());
-
-new p5(function(p5) {
-    let params;
-
-    p5.setup = () => {
-        params = new DrawingParams();
-        p5.createCanvas(params.aspect[1], params.aspect[2]);
-        p5.background(255);
-        let testRandom = fxrand();
-    };
-
-    p5.draw = () => {
-        let cg = createGrid(p5, gridSize, gridSize, generateKey());
-        displayPoints(p5, cg, 3);
-        p5.strokeWeight(1);
-        for (let i = 0; i < cg.length; i++) {
-            let house = new House(p5, cg[i].x, cg[i].y);
-        }
-        p5.noLoop();
-    };
+  p5.draw = () => {
+    let cg = createGrid(p5, gridSize, gridSize, generateKey());
+    displayPoints(p5, cg, 3);
+    p5.strokeWeight(1);
+    for (let i = 0; i < cg.length; i++) {
+      let house = new House(p5, cg[i].x, cg[i].y);
+    }
+    p5.noLoop();
+  };
 });
+
+// let count;
+
+// function setup() {
+//   seed = int(fxrand() * 999999);
+//   createCanvas(1000, 1000);
+//   background("white");
+//   rect(0, 0, width);
+//   count = $fx.getParam("count");
+//   console.log(count);
+// }
+
+// function draw() {
+//   fill("red");
+//   for (let i = 0; i < count; i++) {
+//     rect(fxrand() * width, (fxrand() * height) / 2, 100);
+//   }
+//   noLoop();
+// }
