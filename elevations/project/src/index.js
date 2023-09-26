@@ -2,72 +2,71 @@
 //console.log(fxrand());
 
 const sp = new URLSearchParams(window.location.search);
-//console.log(sp);
+console.log(sp);
 
 // this is how to define parameters
-$fx.params([
-  {
-    id: "gridSize",
-    name: "gridSize01",
-    type: "number",
-    //default: Math.PI,
-    options: {
-      min: 2,
-      max: 20,
-      step: 1,
+$fx.params([{
+        id: "gridSize",
+        name: "gridSize01",
+        type: "number",
+        //default: Math.PI,
+        options: {
+            min: 2,
+            max: 20,
+            step: 1,
+        },
     },
-  },
-  {
-    id: "bigint_id",
-    name: "A bigint",
-    type: "bigint",
-    //default: BigInt(Number.MAX_SAFE_INTEGER * 2),
-    options: {
-      min: Number.MIN_SAFE_INTEGER * 4,
-      max: Number.MAX_SAFE_INTEGER * 4,
-      step: 1,
+    {
+        id: "bigint_id",
+        name: "A bigint",
+        type: "bigint",
+        //default: BigInt(Number.MAX_SAFE_INTEGER * 2),
+        options: {
+            min: Number.MIN_SAFE_INTEGER * 4,
+            max: Number.MAX_SAFE_INTEGER * 4,
+            step: 1,
+        },
     },
-  },
-  {
-    id: "select_id",
-    name: "A selection",
-    type: "select",
-    //default: "pear",
-    options: {
-      options: ["apple", "orange", "pear"],
+    {
+        id: "select_id",
+        name: "A selection",
+        type: "select",
+        //default: "pear",
+        options: {
+            options: ["apple", "orange", "pear"],
+        },
     },
-  },
-  {
-    id: "color_id",
-    name: "A color",
-    type: "color",
-    default: "ff0000",
-  },
-  {
-    id: "boolean_id",
-    name: "A boolean",
-    type: "boolean",
-    //default: true,
-  },
-  {
-    id: "string_id",
-    name: "A string",
-    type: "string",
-    //default: "hello",
-    options: {
-      minLength: 1,
-      maxLength: 64,
+    {
+        id: "color_id",
+        name: "A color",
+        type: "color",
+        default: "ff0000",
     },
-  },
+    {
+        id: "boolean_id",
+        name: "A boolean",
+        type: "boolean",
+        //default: true,
+    },
+    {
+        id: "string_id",
+        name: "A string",
+        type: "string",
+        //default: "hello",
+        options: {
+            minLength: 1,
+            maxLength: 64,
+        },
+    },
 ]);
 
 // this is how features can be defined
-$fx.features({
-  "Grid Size": $fx.getParam("gridSize"),
-  "A random boolean": $fx.rand() > 0.5,
-  "A random string": ["A", "B", "C", "D"].at(Math.floor($fx.rand() * 4)),
-  // "Feature from params, its a number": $fx.getParam("number_id"),
-});
+// $fx.features({
+//     "Grid Size": $fx.getParam("gridSize"),
+//     "A random boolean": $fx.rand() > 0.5,
+//     "A random string": ["A", "B", "C", "D"].at(Math.floor($fx.rand() * 4)),
+//     // "Feature from params, its a number": $fx.getParam("number_id"),
+// });
 
 // log the parameters, for debugging purposes, artists won't have to do that
 // console.log("Current param values:");
