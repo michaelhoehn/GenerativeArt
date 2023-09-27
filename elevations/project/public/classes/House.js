@@ -7,22 +7,21 @@ export default class House {
     }
 
     houseType() {
-        let r = fxrand();
-        if (r > 0.75) {
-            return 0;
-        } else if (r > 0.5 && r <= 0.75) {
-            return 1;
-        } else if (r > 0.25 && r <= 0.5) {
-            return 2;
-        } else {
-            return 3;
+        let numHouseTypes = 3;
+        let houseTypeArray = [];
+
+        for (let i = 0; i <= numHouseTypes; i++) {
+            houseTypeArray.push(i);
         }
+
+        return houseTypeArray.at(Math.floor($fx.rand() * houseTypeArray.length));
     }
 
     drawHouse(p5, type) {
         p5.noStroke();
         switch (type) {
             case 0:
+                house01(p5, this.xPos, this.yPos, 2);
                 p5.fill("green");
                 p5.rect(this.xPos, this.yPos, 50);
                 break;
@@ -43,6 +42,44 @@ export default class House {
                 break;
         }
     }
+}
+
+const house01 = (p5, x, y, u) => {
+    // to do : integrate scale 
+    // scale should derive from grid size
+    p5.stroke("black");
+    p5.strokeWeight(5);
+    p5.noFill();
+    p5.beginShape();
+    if (x > p5.width / 2) {
+        p5.vertex(x, y);
+        p5.vertex(x - 250, y);
+        if (y > p5.height / 2) {
+            p5.fill("yellow");
+            p5.vertex(x - 250, y - 250);
+            p5.vertex(x, y - 250);
+        } else {
+            p5.fill("orange");
+            p5.vertex(x - 250, y + 250);
+            p5.vertex(x, y + 250);
+        }
+        p5.vertex(x, y);
+    } else {
+        p5.beginShape();
+        p5.vertex(x, y);
+        p5.vertex(x + 250, y);
+        if (y > p5.height / 2) {
+            p5.fill("yellow");
+            p5.vertex(x + 250, y - 250);
+            p5.vertex(x, y - 250);
+        } else {
+            p5.fill("orange");
+            p5.vertex(x + 250, y + 250);
+            p5.vertex(x, y + 250);
+        }
+        p5.vertex(x, y);
+    }
+    p5.endShape();
 }
 
 // Component Selector for House Construction
