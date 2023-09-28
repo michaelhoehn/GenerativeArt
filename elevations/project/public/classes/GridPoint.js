@@ -1,5 +1,5 @@
 export default class GridPoint {
-  constructor() {
+  constructor(p5) {
     (this.x = this.x), (this.y = this.y);
   }
 }

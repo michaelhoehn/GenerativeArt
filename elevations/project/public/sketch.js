@@ -5,29 +5,31 @@ import { createGrid, generateKey } from "./utils/gridGenerator.js";
 import { displayPoints } from "./utils/displayPoints.js";
 import House from "./classes/House.js";
 
-new p5(function(p5) {
-    let params;
-    let gridSize;
-    let gridType;
+new p5(function (p5) {
+  let params;
+  let gridSize;
+  let gridType;
+  let drawingScale;
 
-    p5.setup = () => {
-        gridSize = $fx.getParam("gridSize");
-        gridType = $fx.getParam("gridType");
-        console.log(`gridSize = ${gridSize}`);
-        params = new DrawingParams();
-        p5.createCanvas(params.aspect[1], params.aspect[2]);
-        p5.background(255);
-    };
+  p5.setup = () => {
+    params = new DrawingParams();
+    gridSize = params.size;
+    gridType = params.type;
+    drawingScale = params.scale;
+    console.log(drawingScale);
+    p5.createCanvas(params.aspect[1], params.aspect[2]);
+    p5.background(255);
+  };
 
-    p5.draw = () => {
-        let cg = createGrid(p5, gridSize, gridSize, gridType);
-        displayPoints(p5, cg, 3);
-        p5.strokeWeight(1);
-        for (let i = 0; i < cg.length; i++) {
-            let house = new House(p5, cg[i].x, cg[i].y);
-        }
-        p5.noLoop();
-    };
+  p5.draw = () => {
+    let cg = createGrid(p5, gridSize, gridSize, gridType);
+    displayPoints(p5, cg, 10);
+    p5.strokeWeight(1);
+    for (let i = 0; i < cg.length; i++) {
+      new House(p5, cg[i].x, cg[i].y, drawingScale);
+    }
+    p5.noLoop();
+  };
 });
 
 // let count;

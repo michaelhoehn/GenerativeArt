@@ -3,6 +3,7 @@ export default class DrawingParams {
     this.aspect = this.aspectRatio(fxrand());
     this.size = this.gridSize();
     this.type = this.gridType();
+    this.scale = this.scale(this.aspect);
   }
 
   aspectRatio(r) {
@@ -24,10 +25,23 @@ export default class DrawingParams {
   }
 
   gridSize() {
-    return 20;
+    // replace this with a random selector : return gridSize
+    return $fx.getParam("gridSize");
   }
 
   gridType() {
-    return "Square";
+    // replace this with a random selector : return gridType
+    return $fx.getParam("gridType");
+  }
+
+  scale(size) {
+    // replace with scaling logic : return scale
+    if (size[0] === "landscape") {
+      return 1;
+    } else if (size[0] === "portrait") {
+      return 2;
+    } else {
+      return 3;
+    }
   }
 }
