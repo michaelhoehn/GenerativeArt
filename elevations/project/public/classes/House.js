@@ -41,13 +41,13 @@ export default class House {
 const placeDoors = (domainX) => {
   let doorHeight = 50;
   let doorWidth = 20;
-}
+};
 
 const house01 = (p5, x, y, scale) => {
-  let roofHeight = 100;
-  let houseWidth = 150;
-  let houseHeight = 100;
-  let roofOverhang = 20;
+  let houseWidth = Math.floor(115 + fxrand() * 150);
+  let houseHeight = Math.floor(80 + fxrand() * 100);
+  let roofHeight = houseHeight + Math.floor(5 + fxrand() * 49);
+  let roofOverhang = Math.floor(5 + fxrand() * 24);
   let xJitter = 20 + fxrand() * 25;
   let yJitter = 20 + fxrand() * 25;
 
@@ -81,7 +81,7 @@ const house01 = (p5, x, y, scale) => {
 };
 
 const placeWindows = (p5, x, y, hWidth, hHeight) => {
-  let windowCount = Math.floor(fxrand() * 50);
+  let windowCount = Math.floor(fxrand() * 5);
   let windowFrame = 5;
   let windows = [
     {
@@ -94,20 +94,10 @@ const placeWindows = (p5, x, y, hWidth, hHeight) => {
     let r = fxrand();
     p5.strokeWeight(1);
     let winW = Math.floor(10 + fxrand() * 11);
-    let winX = (Math.floor(x + fxrand() * (hWidth - winW))) - hWidth;
+    let winX = Math.floor(x + fxrand() * (hWidth - winW)) - hWidth;
     let winY = Math.floor(y - winW + fxrand() * hHeight) - hHeight;
-    let maxHeight = y + hHeight;
-    console.log("Maximum Height: " + (y + hHeight))
-    console.log("Window Height: " + winY);
 
-    // Debug windows: 
-    // if(winY >= maxHeight){
-    //   p5.fill("red");
-    // }
-    // p5.fill("red");
-    // p5.rect(x, y, -hWidth, -hHeight);
-
-    p5.noFill();
+    // TODO: check if any windows are intersecting
     // push the locations to an array
     windows.push({ x: winX, y: winY });
     // draw the window
@@ -116,10 +106,14 @@ const placeWindows = (p5, x, y, hWidth, hHeight) => {
     // draw the frame (random probability)
     if (r >= 0.5) {
       p5.strokeWeight(0.2);
-      p5.rect(winX + windowFrame / 2, winY + windowFrame / 2, winW - windowFrame);
+      p5.rect(
+        winX + windowFrame / 2,
+        winY + windowFrame / 2,
+        winW - windowFrame
+      );
     }
   }
-}
+};
 
 const house02 = (p5, x, y, scale) => {};
 
