@@ -2,7 +2,11 @@ export default class DrawingParams {
   constructor() {
     this.aspect = this.aspectRatio(fxrand());
     this.size = this.gridSize();
+    // integrate x and y grid sizes
+    this.gridX = this.gridSize();
+    this.gridY = this.gridSize();
     this.type = this.gridType();
+    // I think scale is probably best suited to a read in the house creation function
     this.scale = this.scale(this.aspect);
   }
 
