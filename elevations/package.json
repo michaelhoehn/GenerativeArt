@@ -16,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@octokit/rest": "^20.0.1",
+    "@types/p5": "^1.7.0",
     "adm-zip": "^0.5.9",
     "axios": "^1.4.0",
     "boxen": "^7.1.1",
