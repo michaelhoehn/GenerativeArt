@@ -93,13 +93,13 @@ const placeWindows = (p5, x, y, hWidth, hHeight, scale) => {
     let winX = Math.floor(x + fxrand() * (hWidth - winW)) - hWidth;
     let winY = Math.floor(y - winW + fxrand() * hHeight) - hHeight;
 
-    // TODO: check if any windows are intersecting
-    // push the locations to an array
+    // Push Windows to an array for comparison
     windows.push({ x: winX, y: winY });
-    // draw the window
+
+    // Draw the window
     p5.rect(winX, winY, winW);
 
-    // draw the frame (random probability)
+    // Draw the frame (random probability)
     if (r >= 0.5) {
       p5.strokeWeight(0.2);
       p5.rect(
@@ -107,6 +107,12 @@ const placeWindows = (p5, x, y, hWidth, hHeight, scale) => {
         winY + windowFrame / 2,
         winW - windowFrame
       );
+    }
+  }
+
+  for (let j = 0; j < windowCount; j++) {
+    let t = 10;
+    if (p5.dist() >= t) {
     }
   }
 };
