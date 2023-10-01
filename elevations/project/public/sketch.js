@@ -10,15 +10,25 @@ new p5(function (p5) {
   let gridSize;
   let gridType;
   let drawingScale;
+  let aspect;
 
   p5.setup = () => {
     params = new DrawingParams();
     gridSize = params.size;
     gridType = params.type;
     drawingScale = params.scale;
-    console.log(drawingScale);
+    aspect = params.aspect[0];
+    console.log(params);
     p5.createCanvas(params.aspect[1], params.aspect[2]);
     p5.background(255);
+
+    // Define features here
+    $fx.features({
+      "Grid Size": gridSize,
+      "Grid Type": gridType,
+      "Drawing Scale": drawingScale,
+      "Aspect Ratio": aspect,
+    });
   };
 
   p5.draw = () => {
@@ -31,22 +41,3 @@ new p5(function (p5) {
     p5.noLoop();
   };
 });
-
-// let count;
-
-// function setup() {
-//   seed = int(fxrand() * 999999);
-//   createCanvas(1000, 1000);
-//   background("white");
-//   rect(0, 0, width);
-//   count = $fx.getParam("count");
-//   console.log(count);
-// }
-
-// function draw() {
-//   fill("red");
-//   for (let i = 0; i < count; i++) {
-//     rect(fxrand() * width, (fxrand() * height) / 2, 100);
-//   }
-//   noLoop();
-// }

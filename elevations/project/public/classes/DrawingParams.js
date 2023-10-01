@@ -30,12 +30,12 @@ export default class DrawingParams {
 
   gridSize() {
     // replace this with a random selector : return gridSize
-    return $fx.getParam("gridSize");
+    return 10;
   }
 
   gridType() {
     // replace this with a random selector : return gridType
-    return $fx.getParam("gridType");
+    return 2;
   }
 
   scale(size) {
