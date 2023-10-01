@@ -30,7 +30,7 @@ export default class DrawingParams {
 
   gridSize() {
     // replace this with a random selector : return gridSize
-    return 10;
+    return 5;
   }
 
   gridType() {

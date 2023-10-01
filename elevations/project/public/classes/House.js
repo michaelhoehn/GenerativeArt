@@ -38,11 +38,6 @@ export default class House {
   }
 }
 
-const placeDoors = (domainX) => {
-  let doorHeight = 50;
-  let doorWidth = 20;
-};
-
 const house01 = (p5, x, y, scale) => {
   let houseWidth = Math.floor(115 + fxrand() * 150);
   let houseHeight = Math.floor(80 + fxrand() * 100);
@@ -77,10 +72,11 @@ const house01 = (p5, x, y, scale) => {
   p5.vertex(x, y);
   p5.endShape();
 
-  placeWindows(p5, x, y, houseWidth, houseHeight);
+  placeWindows(p5, x, y, houseWidth, houseHeight, 1);
+  placeDoors(p5, x, y, houseWidth, 1);
 };
 
-const placeWindows = (p5, x, y, hWidth, hHeight) => {
+const placeWindows = (p5, x, y, hWidth, hHeight, scale) => {
   let windowCount = Math.floor(fxrand() * 5);
   let windowFrame = 5;
   let windows = [
@@ -113,6 +109,31 @@ const placeWindows = (p5, x, y, hWidth, hHeight) => {
       );
     }
   }
+};
+
+const placeDoors = (p5, x, y, houseWidth, scale) => {
+  let doorHeight = 50;
+  let doorWidth = 23;
+
+  // Draw the door
+  let doorPosX = p5.random(x, x + houseWidth - doorWidth) - houseWidth;
+  let r = fxrand();
+  if (r > 0.5) {
+    p5.strokeWeight(1.5);
+    p5.fill("black");
+  }
+  p5.rect(doorPosX, y - doorHeight, doorWidth, doorHeight);
+
+  // Draw the door handle
+  p5.noStroke();
+  if (r > 0.5) {
+    p5.fill("white");
+    p5.ellipse(doorPosX + doorWidth - 5, y - doorHeight / 2, 5);
+  } else {
+    p5.fill("black");
+    p5.ellipse(doorPosX + doorWidth - 5, y - doorHeight / 2, 5);
+  }
+  p5.noFill();
 };
 
 const house02 = (p5, x, y, scale) => {};
