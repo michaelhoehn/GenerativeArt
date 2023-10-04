@@ -147,7 +147,7 @@ const placeWindows = (p5, x, y, hWidth, hHeight, scale) => {
 };
 
 const squareWindow = (p5, x, y, w, hX, hY, hW, hH, s) => {
-  let windowFrame = Math.floor(2 + fxrand() * 6) * s;
+  let windowFrame = Math.floor(2 + fxrand() * 6);
   let frameR = fxrand();
   p5.push();
   p5.strokeWeight(3);
@@ -157,7 +157,7 @@ const squareWindow = (p5, x, y, w, hX, hY, hW, hH, s) => {
   if (frameR >= 0.5) {
     p5.noFill();
     p5.strokeWeight(0.5);
-    p5.rect(x + windowFrame / 2, y + windowFrame / 2, (w - windowFrame) * s);
+    p5.rect(x + windowFrame / 2, y + windowFrame / 2, s * w - s * windowFrame);
     p5.strokeWeight(0.25);
     p5.line(x + w / 2, y + windowFrame / 2, x + w / 2, y + w - windowFrame / 2);
     p5.line(x + windowFrame / 2, y + w / 2, x + w - windowFrame / 2, y + w / 2);

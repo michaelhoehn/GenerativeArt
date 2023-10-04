@@ -47,6 +47,6 @@ export default class DrawingParams {
     // } else {
     //     return 3;
     // }
-    return 4;
+    return 2;
   }
 }
