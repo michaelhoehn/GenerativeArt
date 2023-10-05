@@ -26,11 +26,11 @@ export default class DrawingParams {
   }
 
   gridX() {
-    return 20;
+    return 5;
   }
 
   gridY() {
-    return 20;
+    return 5;
   }
 
   gridType() {

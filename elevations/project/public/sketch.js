@@ -22,6 +22,9 @@ new p5(function (p5) {
     scale = params.scale;
     aspect = params.aspect[0];
     console.log(params);
+    // this will need better implementation
+    p5.pixelDensity(0.5);
+    p5.smooth();
     p5.createCanvas(params.aspect[1], params.aspect[2]);
     p5.background(255);
 

@@ -16,20 +16,20 @@ export default class House {
     return houseTypeArray.at(Math.floor(fxrand() * houseTypeArray.length));
   }
 
-  drawHouse(p5, type, scale) {
+  drawHouse(p5, type) {
     p5.noStroke();
     switch (type) {
       case 0:
-        house01(p5, this.xPos, this.yPos, this.scale);
+        house02(p5, this.xPos, this.yPos, this.scale, this.type);
         break;
       case 1:
-        house02(p5, this.xPos, this.yPos, this.scale);
+        house02(p5, this.xPos, this.yPos, this.scale, this.type);
         break;
       case 2:
-        house01(p5, this.xPos, this.yPos, this.scale);
+        house02(p5, this.xPos, this.yPos, this.scale, this.type);
         break;
       case 3:
-        house01(p5, this.xPos, this.yPos, this.scale);
+        house02(p5, this.xPos, this.yPos, this.scale, this.type);
         break;
       default:
         console.log("Invalid house type: ", type);
@@ -38,7 +38,7 @@ export default class House {
   }
 }
 
-const house01 = (p5, x, y, scale) => {
+const house01 = (p5, x, y, scale, type) => {
   let houseWidth = Math.floor(115 + fxrand() * 150) * scale;
   let houseHeight = Math.floor(80 + fxrand() * 100) * scale;
   let roofHeight = houseHeight + Math.floor(5 + fxrand() * 49) * scale;
@@ -49,7 +49,7 @@ const house01 = (p5, x, y, scale) => {
 
   p5.push();
   p5.stroke("black");
-  p5.strokeWeight(5);
+  p5.strokeWeight(2);
   p5.noFill();
 
   // Draw the house
@@ -76,11 +76,11 @@ const house01 = (p5, x, y, scale) => {
   p5.endShape();
   p5.pop();
 
-  placeWindows(p5, x, y, houseWidth, houseHeight, scale);
+  placeWindows(p5, x, y, houseWidth, houseHeight, scale, type);
   placeDoors(p5, x, y, houseWidth, scale);
 };
 
-const house02 = (p5, x, y, scale) => {
+const house02 = (p5, x, y, scale, type) => {
   let houseWidth = Math.floor(115 + fxrand() * 150) * scale;
   let houseHeight = Math.floor(80 + fxrand() * 100) * scale;
   let roofHeight = houseHeight + Math.floor(5 + fxrand() * 49) * scale;
@@ -94,8 +94,6 @@ const house02 = (p5, x, y, scale) => {
   let flipR = fxrand();
   let flipSide = false;
   flipR >= 0.5 ? (flipSide = true) : (flipSide = false);
-  console.log(flipSide);
-  console.log(secondaryHeight);
 
   p5.push();
   p5.stroke("black");
@@ -136,22 +134,52 @@ const house02 = (p5, x, y, scale) => {
     p5.vertex(x - roofOverhang, y);
   }
   p5.endShape();
+
+  // draw the windows
+  // TODO pick this up here
+  let offsetDist = 20;
+  p5.beginShape();
+  p5.strokeWeight(10);
+  p5.stroke("red");
+  p5.point(
+    x - houseWidth / 2,
+    y - houseHeight / 2 - roofHeight + offsetDist * scale
+  );
+  p5.vertex(
+    x - houseWidth / 2,
+    y - houseHeight / 2 - roofHeight + offsetDist * scale
+  );
+  p5.vertex(
+    x - offsetDist,
+    y - houseHeight - Math.sqrt(offsetDist) + offsetDist / 2
+  );
+
+  p5.endShape();
+
   p5.pop();
 
-  placeWindows(p5, x, y, houseWidth, houseHeight, scale);
+  placeWindows(p5, x, y, houseWidth, houseHeight, scale, type);
   placeDoors(p5, x, y, houseWidth, scale);
 };
 
-const house03 = (p5, x, y, scale) => {};
+const house03 = (p5, x, y, scale, type) => {};
 
-const house04 = (p5, x, y, scale) => {};
+const house04 = (p5, x, y, scale, type) => {};
 
-const placeWindows = (p5, x, y, hWidth, hHeight, scale) => {
+const placeWindows = (p5, x, y, hWidth, hHeight, scale, type) => {
   let windowCount = Math.floor(fxrand() * 7);
   let windowTypes = ["round", "square", "rect-tall", "rect-wide"];
   let windows = [];
   let hX = x;
   let hY = y;
+
+  // switch (type) {
+  //   case "":
+  //     console.log();
+  //     break;
+  //   default:
+  //     break;
+  // }
 
   for (let i = 0; i < windowCount; i++) {
     let winW = Math.floor(10 + fxrand() * 11);
@@ -293,30 +321,35 @@ const placeDoors = (p5, x, y, hW, s) => {
   let doorHeight = 50 * s;
   let doorWidth = 23 * s;
   let handleSize = 3 * s;
+  let doorR = fxrand();
+
+  // add possibility of no door
 
   // Draw the door
-  let doorPosX = p5.random(x, x + hW - doorWidth) - hW;
-  let r = fxrand();
-  p5.push();
-  p5.stroke("black");
-  p5.strokeWeight(5);
-  if (r > 0.5) {
-    p5.noStroke();
-    p5.fill("black");
-  }
-  p5.rect(doorPosX, y - doorHeight, doorWidth, doorHeight);
+  if (doorR >= 0.33) {
+    let doorPosX = p5.random(x, x + hW - doorWidth) - hW;
+    let r = fxrand();
+    p5.push();
+    p5.stroke("black");
+    p5.strokeWeight(1);
+    if (r > 0.5) {
+      p5.noStroke();
+      p5.fill("black");
+    }
+    p5.rect(doorPosX, y - doorHeight, doorWidth, doorHeight);
 
-  // Draw the door handle
-  p5.noStroke();
-  if (r > 0.5) {
-    p5.fill("white");
-    p5.ellipse(doorPosX + doorWidth - 5 * s, y - doorHeight / 2, handleSize);
-  } else {
-    p5.fill("black");
-    p5.ellipse(doorPosX + doorWidth - 5 * s, y - doorHeight / 2, handleSize);
+    // Draw the door handle
+    p5.noStroke();
+    if (r > 0.5) {
+      p5.fill("white");
+      p5.ellipse(doorPosX + doorWidth - 5 * s, y - doorHeight / 2, handleSize);
+    } else {
+      p5.fill("black");
+      p5.ellipse(doorPosX + doorWidth - 5 * s, y - doorHeight / 2, handleSize);
+    }
+    p5.noFill();
+    p5.pop();
   }
-  p5.noFill();
-  p5.pop();
 };
 
 // Component Selector for House Construction
